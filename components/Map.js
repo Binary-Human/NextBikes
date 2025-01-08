@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import L from "leaflet";
 
 // Placeholder mock for map center
-const mapCenter = [51.505, -0.09]; // Example: London
+const mapCenter = [43.605642, 1.448919]; // Example: London
 
 export default function Map() {
   return (

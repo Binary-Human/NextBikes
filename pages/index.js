@@ -6,7 +6,8 @@ import Result from "../components/Result";
 import Layout from '../components/Layout';
 import Section from '../components/Section';
 import Container from '../components/Container';
-// import Button from '../components/Button';
+
+import client from "../lib/mongoDB";
 
 import styles from '../styles/Home.module.css';
 
@@ -18,11 +19,28 @@ const Map = dynamic(() => import("../components/Map"), {
   loading: () => <p>Loading map...</p>, // Optional loading state
 });
 
-export default function Home() {
+// Update boolean for correct connection
+export const getServerSideProps = async () => {
+  try {
+    await client.connect() // Will use the default database passed in the MONGODB_URI
+    return {
+      props: { isConnected: true }
+    }
+  } catch (e) {
+    console.error(e)
+    return {
+      props: { isConnected: false }
+    }
+  }
+}
+
+
+export default function Home(isConnected) {
   const [address, setAddress] = useState("");
   const [time, setTime] = useState("");
   const [prediction, setPrediction] = useState(null);
 
+  // Utility function for submitting button -> Generate prediction
   const handleSubmit = async (event) => {
     event.preventDefault();
     
@@ -41,6 +59,17 @@ export default function Home() {
             Bike Sharing Predictor
           </h1>
 
+          {isConnected ? (
+            <h2 className={styles.description}>
+              You are connected to MongoDB!
+            </h2>
+          ) : (
+            <h2 className={styles.description}>
+              You are NOT connected to MongoDB. Check the <code>README.md</code>{" "}
+              for instructions.
+            </h2>
+          )}
+          
           <Map className={styles.homeMap} width="800" height="400" center={DEFAULT_CENTER} zoom={12}>
             {({ TileLayer, Marker, Popup }) => (
               <>
