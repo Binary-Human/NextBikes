@@ -1,11 +1,22 @@
 import { useState } from "react";
-import dynamic from "next/dynamic"; // Import dynamic from Next.js
+import dynamic from "next/dynamic";
 import InputForm from "../components/InputForm";
 import Result from "../components/Result";
-import 'leaflet/dist/leaflet.css';
 
-// Dynamically import the Map component with ssr: false to disable server-side rendering
-const Map = dynamic(() => import("../components/Map"), { ssr: false });
+import Layout from '../components/Layout';
+import Section from '../components/Section';
+import Container from '../components/Container';
+// import Button from '../components/Button';
+
+import styles from '../styles/Home.module.css';
+
+const DEFAULT_CENTER = [38.907132, -77.036546]
+
+// Dynamically import the Map component with ssr: false to avoid server-side rendering issues
+const Map = dynamic(() => import("../components/Map"), { 
+  ssr: false,
+  loading: () => <p>Loading map...</p>, // Optional loading state
+});
 
 export default function Home() {
   const [address, setAddress] = useState("");
@@ -14,26 +25,58 @@ export default function Home() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Make API request to your ARIMAX prediction endpoint (mocked)
+    
+    // Simulate an API request
     const response = await fetch(`/api/forecast?address=${address}&time=${time}`);
     const data = await response.json();
 
-    setPrediction(data.prediction); // Mocked response
+    setPrediction(data.prediction);
   };
 
   return (
-    <div>
-      <h1>Bike Sharing Predictor</h1>
-      <Map />
-      <InputForm 
-        address={address} 
-        setAddress={setAddress} 
-        time={time} 
-        setTime={setTime} 
-        handleSubmit={handleSubmit} 
-      />
-      {prediction && <Result prediction={prediction} />}
-    </div>
+    <Layout>
+      <Section>
+        <Container>
+          <h1 className={styles.title}>
+            Bike Sharing Predictor
+          </h1>
+
+          <Map className={styles.homeMap} width="800" height="400" center={DEFAULT_CENTER} zoom={12}>
+            {({ TileLayer, Marker, Popup }) => (
+              <>
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                />
+                <Marker position={DEFAULT_CENTER}>
+                  <Popup>
+                    A pretty CSS3 popup. <br /> Easily customizable.
+                  </Popup>
+                </Marker>
+              </>
+            )}
+          </Map>
+
+          <p className={styles.description}>
+            <code className={styles.code}>Pick a place and a time</code>
+          </p>
+
+          <div className={styles.view}>
+            <InputForm 
+              address={address} 
+              setAddress={setAddress} 
+              time={time} 
+              setTime={setTime} 
+              handleSubmit={handleSubmit} 
+            />
+            
+            {prediction && <Result prediction={prediction} />}
+          </div>
+        </Container>
+      </Section>
+      </Layout>
   );
 }
+
+
+

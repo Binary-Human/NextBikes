@@ -1,26 +1,42 @@
+import styles from '../styles/Form.module.css';
+
 export default function InputForm({ address, setAddress, time, setTime, handleSubmit }) {
     return (
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Address:</label>
+      <div className={styles.boxform}>
+        <form onSubmit={handleSubmit} classNameName={styles.form}>
+          <h2 className={styles.title}>Enter Details</h2>
+          
+          <div className={styles.inputContainer}>
           <input 
-            type="text" 
-            value={address} 
-            onChange={(e) => setAddress(e.target.value)} 
-            required 
-          />
+              id="address"
+              className={styles.input}
+              type="text" 
+              value={address} 
+              placeholder=" "
+              onChange={(e) => setAddress(e.target.value)} 
+              required 
+            />
+          <div className={styles.cut}></div>
+          <label for="address" className={styles.placeholder}>Address</label>
         </div>
-        <div>
-          <label>Time:</label>
-          <input 
-            type="datetime-local" 
-            value={time} 
-            onChange={(e) => setTime(e.target.value)} 
-            required 
-          />
-        </div>
-        <button type="submit">Get Prediction</button>
-      </form>
+          
+          <div className={styles.inputContainer}>
+            <input 
+              id="time"
+              className={styles.input}
+              type="datetime-local" 
+              value={time} 
+              placeholder=" "
+              onChange={(e) => setTime(e.target.value)} 
+              required
+            />
+            <div className={styles.cut}></div>
+            <label for="time" className={styles.placeholder}>Time</label>
+          </div>
+          
+          <button type="submit" className={styles.submit}>Get Prediction</button>
+        </form>
+      </div>
     );
   }
   
