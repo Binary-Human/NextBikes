@@ -1,7 +1,4 @@
 import { useState } from "react";
-import dynamic from "next/dynamic";
-import InputForm from "../components/Input-Form";
-import Result from "../components/Result";
 
 import Layout from '../components/Layout';
 import Section from '../components/Section';
@@ -69,9 +66,6 @@ export default function Home(isConnected) {
                 To test our model, please refer to Details & Prediction in the Navigation bar.
                 
               </p>
-              <div className={styles.links}>
-               
-              </div>
             </Container>
           </Section>
         </div>
