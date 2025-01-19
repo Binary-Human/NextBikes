@@ -1,6 +1,6 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import InputForm from "../components/InputForm";
+import InputForm from "../components/Input-Form";
 import Result from "../components/Result";
 
 import Layout from '../components/Layout';
@@ -11,13 +11,10 @@ import client from "../lib/mongoDB";
 
 import styles from '../styles/Home.module.css';
 
+import Sidebar from "../components/Sidebar";
+
 const DEFAULT_CENTER = [38.907132, -77.036546]
 
-// Dynamically import the Map component with ssr: false to avoid server-side rendering issues
-const Map = dynamic(() => import("../components/Map"), { 
-  ssr: false,
-  loading: () => <p>Loading map...</p>, // Optional loading state
-});
 
 // Update boolean for correct connection
 export const getServerSideProps = async () => {
@@ -40,69 +37,44 @@ export default function Home(isConnected) {
   const [time, setTime] = useState("");
   const [prediction, setPrediction] = useState(null);
 
-  // Utility function for submitting button -> Generate prediction
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    
-    // Simulate an API request
-    const response = await fetch(`/api/forecast?address=${address}&time=${time}`);
-    const data = await response.json();
-
-    setPrediction(data.prediction);
-  };
-
   return (
     <Layout>
-      <Section>
-        <Container>
-          <h1 className={styles.title}>
-            Bike Sharing Predictor
-          </h1>
+        <Sidebar />
+        <div style={{ marginLeft: '300px', padding: '20px' }}>
+          <Section>
+            <Container>
+              <h1 className={styles.title}>Welcome to Bike Sharing Predictor</h1>
 
-          {isConnected ? (
-            <h2 className={styles.description}>
-              You are connected to MongoDB!
-            </h2>
-          ) : (
-            <h2 className={styles.description}>
-              You are NOT connected to MongoDB. Check the <code>README.md</code>{" "}
-              for instructions.
-            </h2>
-          )}
-          
-          <Map className={styles.homeMap} width="800" height="400" center={DEFAULT_CENTER} zoom={12}>
-            {({ TileLayer, Marker, Popup }) => (
-              <>
-                <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-                />
-                <Marker position={DEFAULT_CENTER}>
-                  <Popup>
-                    A pretty CSS3 popup. <br /> Easily customizable.
-                  </Popup>
-                </Marker>
-              </>
-            )}
-          </Map>
+              {isConnected ? (
+                <h2 className={styles.description}>
+                  You are connected to MongoDB!
+                </h2>
+              ) : (
+                <h2 className={styles.description}>
+                  You are NOT connected to MongoDB. Check the <code>README.md</code>{" "}
+                  for instructions.
+                </h2>
+              )}
 
-          <p className={styles.description}>
-            <code className={styles.code}>Pick a place and a time</code>
-          </p>
-
-          <div className={styles.view}>
-            <InputForm 
-              address={address} 
-              setAddress={setAddress} 
-              time={time} 
-              setTime={setTime} 
-              handleSubmit={handleSubmit} 
-            />
-            
-            {prediction && <Result prediction={prediction} />}
-          </div>
-        </Container>
-      </Section>
+              <p className={styles.description}>
+                Use this app to predict bike availability based on location and time. 
+                <br/>
+                <br/>
+                This app is meant for regular or occasional users of bike sharing systems in Toulouse, 
+                but also for VêloToulouse administators looking to monitor the evolution of bike availability throughout the city.
+                <br/>
+                The code behind this project is accessible throught the link in the Footer.
+                <br/>
+                <br/>
+                To test our model, please refer to Details & Prediction in the Navigation bar.
+                
+              </p>
+              <div className={styles.links}>
+               
+              </div>
+            </Container>
+          </Section>
+        </div>
       </Layout>
   );
 }

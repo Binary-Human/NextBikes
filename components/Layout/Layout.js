@@ -5,6 +5,11 @@ import Footer from '../Footer';
 
 import styles from './Layout.module.scss';
 
+export const metadat = {
+  title : 'Bike app',
+  description : 'Bike predictions'
+};
+
 const Layout = ({ children, className, ...rest }) => {
   return (
     <div className={styles.layout}>

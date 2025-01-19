@@ -1,9 +1,9 @@
-import styles from '../styles/Form.module.css';
+import styles from './Input-Form.module.css';
 
 export default function InputForm({ address, setAddress, time, setTime, handleSubmit }) {
     return (
       <div className={styles.boxform}>
-        <form onSubmit={handleSubmit} classNameName={styles.form}>
+        <form onSubmit={handleSubmit} className={styles.form}>
           <h2 className={styles.title}>Enter Details</h2>
           
           <div className={styles.inputContainer}>
