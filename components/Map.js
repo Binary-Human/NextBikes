@@ -53,6 +53,7 @@ export default function Map() {
               attribution="&copy; OpenStreetMap contributors"
           />
 
+          {/* TODO : Create different types of icons for business level */}
           {markers.map((marker, index) => (
             <Marker key={index} position={[marker.lat, marker.lng]}>
               <Popup> Bike Station {index+1} </Popup>

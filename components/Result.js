@@ -9,3 +9,13 @@ export default function Result({ prediction }) {
     </div>
   );
 }
+
+
+/** Prediction results
+ * 
+ * Plus proche station
+ * Nombre de vélo
+ * Status
+ * 
+ * Accuracy ?
+ */
