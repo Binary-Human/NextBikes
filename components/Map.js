@@ -1,91 +1,37 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { useEffect, useState } from "react";
 import Papa from "papaparse";
-import * as L from 'leaflet';
 
-import { icon } from "leaflet"
-
-
-//////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////// ICON CREATION   ////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////
-
-const SIZE_ICON = [30, 45]
-const SHADOW_SIZE = [40, 40]
-
-const ICON_BLACK = icon({
-  iconUrl: "/black.png",
-  shadowUrl: "/marker-shadow.png",
-  iconSize: SIZE_ICON,
-  shadowSize: SHADOW_SIZE,
-  iconAnchor: [15, 45],
-  shadowAnchor: [10, 42]
-});
-
-const ICON_GREY = icon({
-  iconUrl: "/grey.png",
-  shadowUrl: "/marker-shadow.png",
-  iconSize: SIZE_ICON,
-  shadowSize: SHADOW_SIZE,
-  iconAnchor: [15, 45],
-  shadowAnchor: [10, 42]
-});
-
-const ICON_VIOLET = icon({
-  iconUrl: "/violet.png",
-  shadowUrl: "/marker-shadow.png",
-  iconSize: SIZE_ICON,
-  shadowSize: SHADOW_SIZE,
-  iconAnchor: [15, 45],
-  shadowAnchor: [10, 42]
-});
-
-const ICON_BLUE = icon({
-  iconUrl: "/blue.png",
-  shadowUrl: "/marker-shadow.png",
-  iconSize: SIZE_ICON,
-  shadowSize: SHADOW_SIZE,
-  iconAnchor: [15, 45],
-  shadowAnchor: [10, 42]
-});
-
-const ICON_GREEN = icon({
-  iconUrl: "/green.png",
-  shadowUrl: "/marker-shadow.png",
-  iconSize: SIZE_ICON,
-  shadowSize: SHADOW_SIZE,
-  iconAnchor: [15, 45],
-  shadowAnchor: [10, 42]
-});
-
-const ICON_ORANGE = icon({
-  iconUrl: "/orange.png",
-  shadowUrl: "/marker-shadow.png",
-  iconSize: SIZE_ICON,
-  shadowSize: SHADOW_SIZE,
-  iconAnchor: [15, 45],
-  shadowAnchor: [10, 42]
-});
-
-const ICON_RED = icon({
-  iconUrl: "/red.png",
-  shadowUrl: "/marker-shadow.png",
-  iconSize: SIZE_ICON,
-  shadowSize: SHADOW_SIZE,
-  iconAnchor: [15, 45],
-  shadowAnchor: [10, 42]
-});
-//////////////////////////////////////////////////////////////////////////////////////
-
-// Pour iterer sur les icones creer un tableau avec correspondance statut index
+import {ICON_BLACK, ICON_BLUE, ICON_GREEN, ICON_GREY, ICON_ORANGE, ICON_RED, ICON_VIOLET} from "../lib/icons";
 
 // Map center at Toulouse
 const mapCenter = [43.605642, 1.448919];
 
+// Return corresponding icon for station state
+function iconFromStatus(number) {
+    switch (number) {
+      case 0:
+        return ICON_GREY;
+      case 1:
+        return ICON_BLUE;
+      case 2:
+        return ICON_GREEN;
+      case 3:
+        return ICON_ORANGE;
+      case 4:
+        return ICON_RED;
+      default:
+        return ICON_BLACK;
+    }
+  }
+
+//////////////////////////////////////////////////////////////////////
 export default function Map() {
   const [markers, setMarkers] = useState([]);
 
-  const loadCsvData = async () => {
+  // Lat Long and numb data from csv for stations
+  // Put into state markers
+  const loadCSVData = async () => {
     try {
       const response = await fetch('/stations.csv');
       const text = await response.text();
@@ -118,26 +64,11 @@ export default function Map() {
     }
   };
 
+  // Apply function loadCSVData
+  // Load the CSV data only when the component mounts
   useEffect(() => {
-    loadCsvData(); // Load the CSV data only when the component mounts
+    loadCSVData(); 
   }, []);
-
-  function iconFromStatus(number) {
-    switch (number) {
-      case 0:
-        return ICON_GREY;
-      case 1:
-        return ICON_BLUE;
-      case 2:
-        return ICON_GREEN;
-      case 3:
-        return ICON_ORANGE;
-      case 4:
-        return ICON_RED;
-      default:
-        return ICON_BLACK;
-    }
-  }
 
   return (
     <div className=" w-full h-full">
@@ -147,15 +78,16 @@ export default function Map() {
               attribution="&copy; OpenStreetMap contributors"
           />
 
-          {/* TODO : Create different types of icons for business level */}
           {markers.map((marker, index) => (
-            
-            <Marker icon={iconFromStatus(marker.nb)} key={index} position={[marker.lat, marker.lng]}>
-              <Popup> Bike Station state : {marker.nb = (0 <= marker.nb && marker.nb <= 4) ? marker.nb : "Not specified"} </Popup>
-              {/* API to fetch exact number of bikes */}
+            <Marker
+              key={index}
+              icon={iconFromStatus(marker.nb)}
+              position={[marker.lat, marker.lng]}
+            >
+              <Popup>Bike Station state: {0 <= marker.nb && marker.nb <= 4 ? marker.nb : "Not specified"}</Popup>
             </Marker>
           ))}
-          
+
         </MapContainer>
     </div>
   );
