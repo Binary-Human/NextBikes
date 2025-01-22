@@ -78,6 +78,12 @@ export default function Map() {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution="&copy; OpenStreetMap contributors"
           />
+          {/** await coordinates from Details page
+           * Center around 
+           * Zoom in
+           */}
+
+          {/** await markers from Inference engines */}
 
           {markers.map((marker, index) => (
             <Marker
@@ -88,6 +94,11 @@ export default function Map() {
               <Popup>Bike Station state: {0 <= marker.nb && marker.nb <= 4 ? marker.nb : "Not specified"}</Popup>
             </Marker>
           ))}
+
+          {/** await coordinates from Details page
+           * Center around 
+           * Zoom in
+           */}
 
         </MapContainer>
     </div>

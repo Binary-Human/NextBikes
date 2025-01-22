@@ -6,10 +6,14 @@ export default function TimeReferenceButtons() {
 
   const timeOptions = [1, 2, 3, 4];
 
+  function sendPredictRequest(){
+    // Send request to Inference API
+  }
+
   return (
     <div>
       <div className={styles.card}>
-        
+
         <div className={styles.buttonsContainer}>
           {timeOptions.map((time) => (
             <button
@@ -27,6 +31,12 @@ export default function TimeReferenceButtons() {
         <p className={styles.selectedTime}>
           Selected Time : {selectedTime} Hour{selectedTime > 1 ? "s" : ""}
         </p>
+        <button
+              className={`${styles.button} margin: 0 padding:0`}
+            >
+              { /* onClick={} Trigger inference */ }
+              Predict
+            </button>
       </div>
     </div>
   );
