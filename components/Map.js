@@ -4,28 +4,6 @@ import Papa from "papaparse";
 
 import {ICON_BLACK, ICON_BLUE, ICON_GREEN, ICON_GREY, ICON_ORANGE, ICON_RED, ICON_VIOLET} from "../lib/icons";
 
-// Map center at Toulouse
-// Change depending on Input in details
-const mapCenter = [43.605642, 1.448919];
-
-// Return corresponding icon for station state
-function iconFromStatus(number) {
-    switch (number) {
-      case 0:
-        return ICON_GREY;
-      case 1:
-        return ICON_BLUE;
-      case 2:
-        return ICON_GREEN;
-      case 3:
-        return ICON_ORANGE;
-      case 4:
-        return ICON_RED;
-      default:
-        return ICON_BLACK;
-    }
-  }
-
 //////////////// Mock functions to sent stations JSON //////////////////////////
 
 export async function getData() {
@@ -69,7 +47,26 @@ export async function getData() {
   
   ]);
   }
-////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Return corresponding icon for station state
+function iconFromStatus(number) {
+    switch (number) {
+      case 0:
+        return ICON_GREY;
+      case 1:
+        return ICON_BLUE;
+      case 2:
+        return ICON_GREEN;
+      case 3:
+        return ICON_ORANGE;
+      case 4:
+        return ICON_RED;
+      default:
+        return ICON_BLACK;
+    }
+  }
+
 
 // Fetch data during server-side rendering
 export async function getServerSideProps() {
@@ -82,9 +79,7 @@ export async function getServerSideProps() {
   };
 }
 
-////////////////////////////////////////////////////////////////////////////////////
-export default function Map() {
-  const [markers, setMarkers] = useState([]);
+export default function Map( {initialCenter, zoom}) {
   const [stations, setStations] = useState([]);
 
   // Load the JSON data only when the component mounts
@@ -104,7 +99,7 @@ export default function Map() {
 
   return (
     <div className=" w-full h-full">
-        <MapContainer center={mapCenter} zoom={13} style={{ height: "400px", width: "100%" }}>
+        <MapContainer center={initialCenter} zoom={zoom} style={{ height: "400px", width: "100%" }}>
           {/** await coordinates from Details page
            * Center around 
            * Zoom in

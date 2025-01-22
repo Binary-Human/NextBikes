@@ -26,8 +26,10 @@ export default function Home(isConnected) {
                 Use this app to predict bike availability based on location and time. 
                 <br/>
                 <br/>
-                This app is meant for regular or occasional users of bike sharing systems in Toulouse, 
-                but also for VêloToulouse administators looking to monitor the evolution of bike availability throughout the city.
+                This app is meant primarly for VêloToulouse administators looking to monitor the evolution of bike availability throughout the city.
+                You can enter a specific address, in order to consult the state of the stations around it for a given time. 
+                You can also freely explore the map, and consult the state of all stations available on Toulouse, in the next hours. 
+                <br/>
                 <br/>
                 The code behind this project is accessible throught the link in the Footer.
                 <br/>

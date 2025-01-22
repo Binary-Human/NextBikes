@@ -13,7 +13,7 @@ export default function Details() {
   const [address, setAddress] = useState("");
   const [time, setTime] = useState("");
   const [prediction, setPrediction] = useState(null);
-  const [submit, setSubmit] = useState(false);
+  const [coordinates, setCoordinates] = useState(null);
 
   const router = useRouter();
 
@@ -34,24 +34,34 @@ export default function Details() {
     localStorage.setItem("time", time);
   }, [time]);
 
-  // If submit, redirect to map
-  useEffect(() => {
-    if (submit && prediction) {
-      router.replace('/map');
-    }
-  }, [submit, prediction, router]);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    setPrediction(true); // Get actual prediction, see below
-    setSubmit(true);
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`
+      );
 
-    // Simulate an API request
-    // OBSOLETE
-    // const response = await fetch(`/api/forecast?address=${address}&time=${time}`);
-    // const data = await response.json();
+      if (!response.ok) {
+        throw new Error(`Failed to fetch coordinates: ${response.statusText}`);
+      }
+      const data = await response.json();
+      if (data.length === 0) {
+        throw new Error("No results found for the provided address.");
+      }
 
+      const { lat, lon } = data[0];
+      setCoordinates({ lat, lon });
+      console.log("Coordinates fetched successfully:", { lat, lon });
+
+      setPrediction(true);
+
+      // Redirect to the map page, passing coordinates as query parameters
+      router.push(`/map?lat=${lat}&lng=${lon}`);
+    } catch (error) {
+      console.error("Error fetching coordinates:", error);
+      alert(error.message);
+    }
   };
   
   return (
@@ -72,8 +82,6 @@ export default function Details() {
                 setTime={setTime}
                 handleSubmit={handleSubmit}
               />
-                
-              {/* <Result prediction={prediction} /> */}
             </div>
           </Container>
         </Section>

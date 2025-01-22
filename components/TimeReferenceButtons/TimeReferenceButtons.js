@@ -29,7 +29,7 @@ export default function TimeReferenceButtons() {
         </div>
         
         <p className={styles.selectedTime}>
-          Selected Time : {selectedTime} Hour{selectedTime > 1 ? "s" : ""}
+          Select Time
         </p>
         <button
               className={`${styles.button} margin: 0 padding:0`}
