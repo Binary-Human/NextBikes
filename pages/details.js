@@ -1,28 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputForm from "../components/Input-Form";
-import Result from "../components/Result";
 import Layout from "../components/Layout";
 import Section from "../components/Section";
 import Container from "../components/Container";
 import Sidebar from "../components/Sidebar";
 import styles from "../styles/Home.module.css";
 
+import { useRouter } from 'next/router';
+
 // Utility function for submitting button -> Generate prediction
 export default function Details() {
   const [address, setAddress] = useState("");
   const [time, setTime] = useState("");
   const [prediction, setPrediction] = useState(null);
+  const [submit, setSubmit] = useState(false);
+
+  const router = useRouter();
+
+  // If submit, redirect to map
+  useEffect(() => {
+    if (submit && prediction) {
+      router.replace('/map');
+    }
+  }, [submit, prediction, router]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    setPrediction(true); // Get actual prediction, see below
+    setSubmit(true);
+
     // Simulate an API request
-    const response = await fetch(`/api/forecast?address=${address}&time=${time}`);
-    const data = await response.json();
+    // OBSOLETE
+    // const response = await fetch(`/api/forecast?address=${address}&time=${time}`);
+    // const data = await response.json();
 
-    setPrediction(data.prediction);
   };
-
+  
   return (
     <Layout>
       <Sidebar />
@@ -41,7 +55,8 @@ export default function Details() {
                 setTime={setTime}
                 handleSubmit={handleSubmit}
               />
-              {prediction && <Result prediction={prediction} />}
+                
+              {/* <Result prediction={prediction} /> */}
             </div>
           </Container>
         </Section>
