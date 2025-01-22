@@ -17,7 +17,7 @@ export default function Details() {
 
   const router = useRouter();
 
-  // Load saved values if the exist
+  // Load saved values if they exist
   useEffect(() => {
     const savedAddress = localStorage.getItem("address");
     const savedTime = localStorage.getItem("time");

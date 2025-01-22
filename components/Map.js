@@ -87,10 +87,8 @@ export default function Map() {
   const [markers, setMarkers] = useState([]);
   const [stations, setStations] = useState([]);
 
-  // Apply function loadCSVData
-  // Load the CSV data only when the component mounts
+  // Load the JSON data only when the component mounts
   useEffect(() => {
-    // Function to fetch and load JSON data
     const loadJSONData = async () => {
       try {
         const response = await getData();
@@ -116,7 +114,6 @@ export default function Map() {
               attribution="&copy; OpenStreetMap contributors"
           />
           
-          {/** await markers from Inference engines */}
           {stations.map((station, index) => (
             <Marker
               key={index}
