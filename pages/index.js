@@ -15,10 +15,10 @@ export default function Home(isConnected) {
   const [prediction, setPrediction] = useState(null);
 
   return (
-    <Layout>
+    <Layout style={{paddingBottom: '3px', paddingBottom: '3px' }}>
         <Sidebar />
         <div style={{ marginLeft: '300px', padding: '20px' }}>
-          <Section>
+          <Section className={`${styles.sectionOverride}`}>
             <Container>
               <h1 className={styles.title}>Welcome to Bike Sharing Predictor</h1>
 

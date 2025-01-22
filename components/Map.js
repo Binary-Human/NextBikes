@@ -36,6 +36,7 @@ export default function Map() {
       const response = await fetch('/stations.csv');
       const text = await response.text();
 
+      // TODO : Turn CSV parsing into Json processing
       Papa.parse(text, {
         complete: (result) => {
           console.log('Parsed CSV data:', result.data);
