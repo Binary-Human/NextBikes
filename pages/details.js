@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import InputForm from "../components/Input-Form";
+import InputForm from "../components/Input-Form"; 
 import Layout from "../components/Layout";
 import Section from "../components/Section";
 import Container from "../components/Container";
@@ -16,6 +16,23 @@ export default function Details() {
   const [submit, setSubmit] = useState(false);
 
   const router = useRouter();
+
+  // Load saved values if the exist
+  useEffect(() => {
+    const savedAddress = localStorage.getItem("address");
+    const savedTime = localStorage.getItem("time");
+
+    if (savedAddress) setAddress(savedAddress);
+    if (savedTime) setTime(savedTime);
+  }, []);
+
+  // Save local at every UI update
+  useEffect(() => {
+    localStorage.setItem("address", address);
+  }, [address]);
+  useEffect(() => {
+    localStorage.setItem("time", time);
+  }, [time]);
 
   // If submit, redirect to map
   useEffect(() => {

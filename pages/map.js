@@ -7,8 +7,6 @@ import TimeReferenceButtons from "../components/TimeReferenceButtons";
 
 import styles from "../styles/Home.module.css";
 
-const DEFAULT_CENTER = [38.907132, -77.036546];
-
 // Dynamically import the Map component with ssr: false to avoid server-side rendering issues
 const Map = dynamic(() => import("../components/Map"), {
   ssr: false,
