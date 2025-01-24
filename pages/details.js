@@ -34,6 +34,32 @@ export default function Details() {
     localStorage.setItem("time", time);
   }, [time]);
 
+  // Construct API request to inference MS
+  async function getTime(time) {
+    const datetime = new Date();
+    datetime.setHours(datetime.getHours() + time);
+
+    const formattedDateTime = datetime
+      .toISOString()
+      .replace("T", " ")
+      .slice(0, 19);
+
+    try {
+      /*
+      const response = await fetch(
+        `{API_ENDPOINT}inference?datetime=${encodeURIComponent(formattedDateTime)}`
+      );
+      const data = await response.json();
+      */
+      const data = await getData(datetime)                               // Mock function
+
+      const stationsData = JSON.parse(data);
+      setStations(stationsData);
+    } catch (error) {
+      console.error("Error fetching prediction data:", error);
+    }
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -57,7 +83,7 @@ export default function Details() {
       setPrediction(true);
 
       // Redirect to the map page, passing coordinates as query parameters
-      router.push(`/map?lat=${lat}&lng=${lon}`);
+      router.push(`/map?lat=${lat}&lng=${lon}&zoom=16.5`);                    // ADD TIME
     } catch (error) {
       console.error("Error fetching coordinates:", error);
       alert(error.message);

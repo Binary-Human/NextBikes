@@ -1,15 +1,18 @@
 import { useState } from "react";
 import styles from "./TimeReferenceButtons.module.css";
 
-export default function TimeReferenceButtons() {
+export default function TimeReferenceButtons( { onPredict }) {
   const [selectedTime, setSelectedTime] = useState(1); // Default to 1 hour
 
-  const timeOptions = [1, 2, 3, 4];
+  const timeOptions = [1, 2, 3, 4, 5, 6];
 
-  function sendPredictRequest(){
-    // Send request to Inference API
+  function handlePredictClick() {
+  if (typeof onPredict === "function") {
+    onPredict(selectedTime);
+  } else {
+    console.error("onPredict callback is not defined.");
   }
-
+}
   return (
     <div>
       <div className={styles.card}>
@@ -33,8 +36,8 @@ export default function TimeReferenceButtons() {
         </p>
         <button
               className={`${styles.button} margin: 0 padding:0`}
+              onClick={handlePredictClick}
             >
-              { /* onClick={} Trigger inference */ }
               Predict
             </button>
       </div>
